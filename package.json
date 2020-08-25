@@ -1,0 +1,47 @@
+{
+  "name": "g6-samples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "clean": "rm dist/bundle.js",
+    "build-dev": "webpack -d --mode development",
+    "build-prod": "webpack -p --mode production",
+    "start": "webpack-dev-server --hot --mode development"
+  },
+  "dependencies": {
+    "@antv/g6": "^3.6.1",
+    "lodash": "^4.17.20",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-hot-loader": "^4.12.21"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "@types/react": "^16.9.41",
+    "@types/react-dom": "^16.9.8",
+    "@babel/preset-react": "^7.10.1",
+    "babel-loader": "^8.1.0",
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@hot-loader/react-dom": "^16.13.0+4.12.20",
+    "webpack-dev-server": "^3.11.0",
+    "css-loader": "^3.6.0",
+    "style-loader": "^1.2.1",
+    "html-webpack-plugin": "^4.3.0",
+    "postcss-loader": "^3.0.0",
+    "autoprefixer": "^9.8.4",
+    "typescript": "^3.9.5",
+    "ts-loader": "^8.0.2",
+    "less-loader": "^6.1.2",
+    "less": "^3.11.3",
+    "file-loader": "^6.0.0",
+    "url-loader": "^4.1.0",
+    "lodash-webpack-plugin": "^0.11.5",
+    "prettier": "^2.0.5"
+  }
+}
