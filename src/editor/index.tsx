@@ -6,6 +6,7 @@ import * as Util from '@/utils';
 
 import Editor from '@/components/Editor';
 import Flow from '@/components/Flow';
+import Er from "@/components/Er";
 import Mind from '@/components/Mind';
 import Command from '@/components/Command';
 import ItemPanel, { Item } from '@/components/ItemPanel';
@@ -28,6 +29,7 @@ import { setAnchorPointsState } from '@/shape/common/anchor';
 export {
   G6,
   Util,
+  Er,
   Flow,
   Mind,
   Command,

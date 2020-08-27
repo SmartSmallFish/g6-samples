@@ -1,21 +1,22 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist/",
-        "allowSyntheticDefaultImports": true,
-        "declaration": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "target": "esnext",
-        "jsx": "react",
-        "noImplicitThis": true,
-        "strictBindCallApply": true,
-        "paths": {
-            "@/*": [
-                "src/editor/*"
-            ]
-        }
-    },
-    "include": [
-        "./src/**/*"
-    ]
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "esnext",
+    "jsx": "react",
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/editor/*"
+      ]
+    }
+  },
+  "include": [
+    "./src/**/*"
+  ]
 }

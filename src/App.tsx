@@ -4,7 +4,8 @@ import { hot } from "react-hot-loader/root";
 // import { GROUP_WIDTH, FIELD_HEIGHT } from "./constants";
 import renderByGroup from "./renderByGroup";
 import renderNodes from "./renderNodes";
-import Editor, { Flow } from "./editor";
+import '@/components/Graph/behavior/hoverItem';
+import ER from './er'
 
 interface Props {
   name: string;
@@ -12,13 +13,14 @@ interface Props {
 
 class App extends React.Component<Props> {
   componentDidMount() {
-    const { clientWidth: width, clientHeight: height } = document.body;
+    // const { clientWidth: width, clientHeight: height } = document.body;
     // renderByGroup({ width, height });
-    renderNodes({ width, height });
+    // renderNodes({ width, height });
   }
 
   render() {
-    return <div id="container"></div>;
+    // return <div id="container"></div>;
+    return <ER />
   }
 }
 

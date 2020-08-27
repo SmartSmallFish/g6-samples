@@ -44,6 +44,9 @@ function renderNodes({ width, height }) {
         // "drag-node-with-group",
       ],
     },
+    defaultNode: {
+      type: "bizFlowNode",
+    },
     fitCenter: true,
   });
   // 读取数据

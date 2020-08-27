@@ -3,6 +3,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
+const resolve = (dir) => path.join(__dirname, dir);
+
 const config = {
   entry: ["react-hot-loader/patch", "./src/index.tsx"],
   output: {
@@ -75,6 +77,7 @@ const config = {
     extensions: [".js", ".jsx", ".tsx", ".ts"],
     alias: {
       "react-dom": "@hot-loader/react-dom",
+      "@": resolve('./src/editor'),
     },
   },
   devServer: {
