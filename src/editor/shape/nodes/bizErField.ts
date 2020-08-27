@@ -24,12 +24,10 @@ const bizErField: CustomNode = {
   options: {
     size: [COMMON_NODE_WIDTH, NODE_FIELD_HEIGHT],
     wrapperStyle: {
-      fill: "#5487ea",
-      // radius: 8,
+      fill: "transparent",
     },
     contentStyle: {
-      fill: "#FFF",
-      // radius: 6,
+      fill: "transparent",
     },
     labelStyle: {
       fill: "#000000",

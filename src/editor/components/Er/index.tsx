@@ -125,14 +125,14 @@ class Er extends React.Component<FlowProps, FlowState> {
       },
       defaultCombo: {
         // The type of the combos. You can also assign type in the data of combos
-        type: "cRect",
+        type: "combo-rect",
         // ... Other global configurations for combos
-        anchorPoints: [
-          [0, 0.5],
-          [1, 0.5],
-          [0.5, 0],
-          [0.5, 1],
-        ],
+        // anchorPoints: [
+        //   [0, 0.5],
+        //   [1, 0.5],
+        //   [0.5, 0],
+        //   [0.5, 1],
+        // ],
       },
       ...graphConfig,
       groupType: "rect",

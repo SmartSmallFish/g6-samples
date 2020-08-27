@@ -62,7 +62,15 @@ const data = {
       id: "p1",
     },
   ],
-  combos: [{ id: "combo1", label: "用户信息列表" }],
+  combos: [
+    {
+      id: "combo1",
+      data: {
+        title: "用户信息列表",
+        desc: "主体数据",
+      },
+    },
+  ],
 };
 
 function App() {
