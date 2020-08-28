@@ -20,6 +20,11 @@ const WRAPPER_CLASS_NAME = "field-wrapper";
 const CONTENT_CLASS_NAME = "field-content";
 const LABEL_CLASS_NAME = "field-label";
 
+interface ComboField {
+  label: string;
+  value: string;
+}
+
 const bizErField: CustomNode = {
   options: {
     size: [COMMON_NODE_WIDTH, NODE_FIELD_HEIGHT],
@@ -114,6 +119,7 @@ const bizErField: CustomNode = {
     const [width, height] = this.getSize(model);
     const { labelStyle } = this.getOptions(model);
     const { data } = model;
+    const { label, value } = data as ComboField; 
     let fontSize = 12;
 
     // const shape = group.findByClassName(LABEL_CLASS_NAME);
@@ -124,29 +130,30 @@ const bizErField: CustomNode = {
     //   fontSize = attrs.fontSize;
     // }
 
-    const labelTextWidth = getLetterWidth(data.label, fontSize);
+    const labelTextWidth = getLetterWidth(label, fontSize);
     group.addShape("text", {
       className: LABEL_CLASS_NAME,
       draggable: true,
       attrs: {
         x: WRAPPER_HORIZONTAL_PADDING,
         y: height / 2,
-        text: data.label,
+        text: label,
         ...labelStyle,
       },
     });
 
-    const valueTextWidth = getLetterWidth(data.value, fontSize);
-    group.addShape("text", {
+    const valueTextWidth = getLetterWidth(value, fontSize);
+    const shape = group.addShape("text", {
       className: LABEL_CLASS_NAME,
       draggable: true,
       attrs: {
         x: width / 2,
         y: height / 2,
-        text: data.value,
+        text: value,
         ...labelStyle,
       },
     });
+    return shape;
   },
 
   setLabelText(model: NodeModel, group: GGroup) {

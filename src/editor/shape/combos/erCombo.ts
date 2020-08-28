@@ -20,20 +20,30 @@ const titleStyle = {
 
 const WRAPPER_CLASS_NAME = "combo-wrapper";
 
+interface ComboAttr {
+  title: string;
+  desc: string;
+}
+interface OriginPoint {
+  x: number;
+  y: number;
+}
+
 const comboRect: IShapeOptions = {
   drawShape(cfg: NodeModel, group: GGroup) {
     const self = this;
     let paddingTop = 5;
     const { data } = cfg;
-    if (data.title) {
+    const { title, desc } = data as ComboAttr;
+    if (title) {
       paddingTop += TITLE_HEIGHT;
     }
-    if (data.desc) {
+    if (desc) {
       paddingTop += DESC_HEIGHT;
     }
     cfg.padding = cfg.padding || [paddingTop, 5, 5, 5];
     const style = self.getShapeStyle(cfg);
-    const comboOriginPoint = {
+    const comboOriginPoint: OriginPoint = {
       x: -style.width / 2 - (cfg.padding[3] - cfg.padding[1]) / 2,
       y: -style.height / 2 - (cfg.padding[0] - cfg.padding[2]) / 2,
     };
@@ -62,10 +72,11 @@ const comboRect: IShapeOptions = {
     return rect;
   },
 
-  drawTitle(cfg: NodeModel, group: GGroup, originPoint: Object) {
+  drawTitle(cfg: NodeModel, group: GGroup, originPoint: OriginPoint) {
     const self = this;
     const style = self.getShapeStyle(cfg);
     const { data } = cfg;
+    const { title } = data as ComboAttr;
     const { x, y } = originPoint;
     group.addShape("rect", {
       attrs: {
@@ -98,17 +109,18 @@ const comboRect: IShapeOptions = {
       attrs: {
         x: x + 10,
         y: y + TITLE_HEIGHT / 2,
-        text: data.title,
+        text: title,
         ...titleStyle,
         cursor: "move",
       },
     });
   },
 
-  drawDesc(cfg: NodeModel, group: GGroup, originPoint: Object) {
+  drawDesc(cfg: NodeModel, group: GGroup, originPoint: OriginPoint) {
     const self = this;
     const style = self.getShapeStyle(cfg);
     const { data } = cfg;
+    const { desc } = data as ComboAttr;
     const { x, y } = originPoint;
     group.addShape("rect", {
       attrs: {
@@ -139,7 +151,7 @@ const comboRect: IShapeOptions = {
       attrs: {
         x: x + 10,
         y: y + TITLE_HEIGHT + DESC_HEIGHT / 2,
-        text: data.desc,
+        text: desc,
         ...titleStyle,
         cursor: "move",
       },
@@ -165,8 +177,8 @@ const comboRect: IShapeOptions = {
     // ];
     return [
       [0, 0.5],
-      [1, 0.5]
-    ]
+      [1, 0.5],
+    ];
   },
 };
 G6.registerCombo("combo-rect", comboRect, "rect");

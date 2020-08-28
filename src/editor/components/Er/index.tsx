@@ -17,7 +17,6 @@ import behaviorManager from "@/common/behaviorManager";
 import GraphComponent from "@/components/Graph";
 
 import "./behavior";
-// import '@/shape/groups/erGroup';
 
 interface FlowProps extends Partial<GraphReactEventProps> {
   style?: React.CSSProperties;

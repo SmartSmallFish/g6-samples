@@ -180,8 +180,8 @@ export function getMindRecallEdges(graph: TreeGraph, node: Node, edges: Edge[] =
   return getMindRecallEdges(graph, parentNode, edges);
 }
 
-export function getLetterWidth(str: String, fontSize: Number) {
-  let currentWidth: Number = 0;
+export function getLetterWidth(str: string, fontSize: number) {
+  let currentWidth: number = 0;
   const pattern = new RegExp("[\u4E00-\u9FA5]+"); // distinguish the Chinese charactors and letters
   str.split("").forEach((letter, i) => {
     if (pattern.test(letter)) {
@@ -202,11 +202,7 @@ export function getLetterWidth(str: String, fontSize: Number) {
  * @param {number} fontSize font size
  * @return {string} the processed result
  */
-export const fittingString = (
-  str: String,
-  maxWidth: Number,
-  fontSize: Number
-) => {
+export const fittingString = (str: string, maxWidth: number, fontSize: number) => {
   const ellipsis = "...";
   const ellipsisLength = G6.Util.getTextSize(ellipsis, fontSize)[0];
   let currentWidth = 0;
