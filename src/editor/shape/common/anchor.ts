@@ -11,17 +11,29 @@ type GetAnchorPointDisabledStyle = (item: Node, anchorPoint: number[]) => ShapeS
 const ANCHOR_POINT_NAME = 'anchorPoint';
 
 const getAnchorPointDefaultStyle: GetAnchorPointStyle = (item, anchorPoint) => {
-  const { width, height } = item.getKeyShape().getBBox();
+  const keyShape = item.getKeyShape();
+  const BBox = keyShape.getBBox();
+  const { width, height } = BBox;
 
-  const [x, y] = anchorPoint;
+  let x, y;
+  const [pointX, pointY] = anchorPoint;
+
+  if (keyShape.cfg.name === "combo-keyShape") {
+    x = BBox.x + width * pointX;
+    y = BBox.y + height * pointY;
+  } else {
+    x = width * pointX;
+    y = height * pointY;
+  }
 
   return {
-    x: width * x,
-    y: height * y - 3,
+    x,
+    y,
     r: 3,
     lineWidth: 2,
-    fill: '#FFFFFF',
-    stroke: '#5AAAFF',
+    fill: "#FFFFFF",
+    stroke: "#5AAAFF",
+    zIndex: 2,
   };
 };
 

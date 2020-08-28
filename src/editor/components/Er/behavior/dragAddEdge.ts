@@ -47,11 +47,14 @@ const dragAddEdgeBehavior: DragAddEdgeBehavior & ThisType<DragAddEdgeBehavior & 
 
   getEvents() {
     return {
-      'node:mouseenter': 'handleNodeMouseEnter',
-      'node:mouseleave': 'handleNodeMouseLeave',
-      'node:mousedown': 'handleNodeMouseDown',
-      mousemove: 'handleMouseMove',
-      mouseup: 'handleMouseUp',
+      "node:mouseenter": "handleNodeMouseEnter",
+      "node:mouseleave": "handleNodeMouseLeave",
+      "node:mousedown": "handleNodeMouseDown",
+      "combo:mouseenter": "handleNodeMouseEnter",
+      "combo:mouseleave": "handleNodeMouseLeave",
+      "combo:mousedown": "handleNodeMouseDown",
+      mousemove: "handleMouseMove",
+      mouseup: "handleMouseUp",
     };
   },
 

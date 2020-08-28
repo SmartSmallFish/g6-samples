@@ -55,7 +55,7 @@ const data = {
       target: "1",
       targetAnchor: 1,
     },
-    // { source: "combo1", target: "2" },
+    { source: "2", target: "combo1" },
   ],
   groups: [
     {

@@ -12,10 +12,12 @@ interface HoverItemBehavior extends Behavior {
 const hoverItemBehavior: HoverItemBehavior = {
   getEvents() {
     return {
-      'node:mouseenter': 'handleItemMouseenter',
-      'edge:mouseenter': 'handleItemMouseenter',
-      'node:mouseleave': 'handleItemMouseleave',
-      'edge:mouseleave': 'handleItemMouseleave',
+      "combo:mouseenter": "handleItemMouseenter",
+      "node:mouseenter": "handleItemMouseenter",
+      "edge:mouseenter": "handleItemMouseenter",
+      "combo:mouseleave": "handleItemMouseleave",
+      "node:mouseleave": "handleItemMouseleave",
+      "edge:mouseleave": "handleItemMouseleave",
     };
   },
 

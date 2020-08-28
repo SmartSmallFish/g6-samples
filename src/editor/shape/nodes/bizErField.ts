@@ -31,7 +31,6 @@ const bizErField: CustomNode = {
     },
     labelStyle: {
       fill: "#000000",
-      // textAlign: "center",
       textBaseline: "middle",
       fontSize: NODE_FONT_SIZE,
     },

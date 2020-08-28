@@ -59,14 +59,16 @@ const bizNode: CustomNode = {
     const [width, height] = this.getSize(model);
     const { wrapperStyle } = this.getOptions(model);
 
-    const shape = group.addShape('rect', {
+    const shape = group.addShape("rect", {
       className: WRAPPER_CLASS_NAME,
       draggable: true,
       attrs: {
         x: 0,
-        y: -WRAPPER_BORDER_WIDTH * 2,
+        // y: -WRAPPER_BORDER_WIDTH * 2,
+        y: 0,
         width,
-        height: height + WRAPPER_BORDER_WIDTH * 2,
+        height,
+        // height: height + WRAPPER_BORDER_WIDTH * 2,
         ...wrapperStyle,
       },
     });

@@ -1,6 +1,9 @@
 import G6 from "@antv/g6";
 import { ShapeOptions as IShapeOptions } from "@antv/g6/lib/interface/shape";
+import merge from "lodash/merge";
+import isArray from "lodash/isArray";
 import { GGroup, NodeModel, CustomNode, Item } from "@/common/interfaces";
+import { ItemState } from "@/common/constants";
 import { setAnchorPointsState } from "../common/anchor";
 
 const COMBO_BORDER = 3;
@@ -11,10 +14,11 @@ const GAP_HEIGHT = 1;
 
 const titleStyle = {
   fill: "#000000",
-  // textAlign: "center",
   textBaseline: "middle",
   fontSize: NODE_FONT_SIZE,
 };
+
+const WRAPPER_CLASS_NAME = "combo-wrapper";
 
 const comboRect: IShapeOptions = {
   drawShape(cfg: NodeModel, group: GGroup) {
@@ -35,6 +39,9 @@ const comboRect: IShapeOptions = {
     };
     const { x, y } = comboOriginPoint;
     const rect = group.addShape("rect", {
+      name: "combo-keyShape",
+      className: WRAPPER_CLASS_NAME,
+      draggable: true,
       attrs: {
         ...style,
         x,
@@ -47,38 +54,11 @@ const comboRect: IShapeOptions = {
         radius: 8,
         cursor: "move",
       },
-      draggable: true,
-      name: "combo-keyShape",
     });
 
     self.drawTitle(cfg, group, comboOriginPoint);
     self.drawDesc(cfg, group, comboOriginPoint);
 
-    // const { x, y, width, height } = rect.getBBox();
-
-    // const markerPosition = [
-    //   { x: x + width / 2, y: y },
-    //   { x: x, y: y + height / 2 },
-    //   { x: x + width, y: y + height / 2 },
-    //   { x: x + width / 2, y: y + height },
-    // ];
-
-    // markerPosition.forEach((item, index) => {
-    //   group.addShape("marker", {
-    //     attrs: {
-    //       ...style,
-    //       fill: "white",
-    //       stroke: style.stroke,
-    //       lineDash: [0, 0],
-    //       opacity: 1,
-    //       x: item.x,
-    //       y: item.y,
-    //       r: 5,
-    //     },
-    //     draggable: true,
-    //     name: `combo-marker-shape-${index}`,
-    //   });
-    // });
     return rect;
   },
 
@@ -170,6 +150,23 @@ const comboRect: IShapeOptions = {
     setAnchorPointsState.call(this, name, value, item);
   },
 
-  // afterUpdate(cfg, combo) {},
+  getAnchorPoints(cfg: NodeModel) {
+    // const self = this;
+    // const style = self.getShapeStyle(cfg);
+    // const { width, height } = style;
+    // const comboOriginPoint = {
+    //   x: -width / 2 - (cfg.padding[3] - cfg.padding[1]) / 2,
+    //   y: -height / 2 - (cfg.padding[0] - cfg.padding[2]) / 2,
+    // };
+    // const { x, y } = comboOriginPoint;
+    // return [
+    //   [x, y + 0.5 * height],
+    //   [x + style.width, y + 0.5 * style.height],
+    // ];
+    return [
+      [0, 0.5],
+      [1, 0.5]
+    ]
+  },
 };
 G6.registerCombo("combo-rect", comboRect, "rect");
