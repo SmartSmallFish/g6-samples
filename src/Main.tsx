@@ -5,13 +5,13 @@ import { hot } from "react-hot-loader/root";
 import renderByGroup from "./renderByGroup";
 import renderNodes from "./renderNodes";
 import '@/components/Graph/behavior/hoverItem';
-import ER from './er'
+import App from './App'
 
 interface Props {
   name: string;
 }
 
-class App extends React.Component<Props> {
+class Main extends React.Component<Props> {
   componentDidMount() {
     // const { clientWidth: width, clientHeight: height } = document.body;
     // renderByGroup({ width, height });
@@ -20,8 +20,8 @@ class App extends React.Component<Props> {
 
   render() {
     // return <div id="container"></div>;
-    return <ER />
+    return <App />;
   }
 }
 
-export default hot(App);
+export default hot(Main);

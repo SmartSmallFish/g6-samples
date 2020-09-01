@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from "react-dom";
 
-import App from './App';
+import Main from './Main';
 import "./styles.css";
 import "./styles.less";
 
 var mountNode = document.getElementById("app");
-ReactDOM.render(<App name="Jane" />, mountNode);
+ReactDOM.render(<Main name="Jane" />, mountNode);

@@ -1,5 +1,5 @@
 import React from "react";
-import Editor, { Er } from "@/index";
+import Editor, { Api } from "@/index";
 // import styles from "./index.less";
 
 const data = {
@@ -76,7 +76,7 @@ const data = {
 function App() {
   return (
     <Editor>
-      <Er
+      <Api
         // className={styles.graph}
         style={{ position: "relative", height: 600, background: "#f5f5f5" }}
         data={data}

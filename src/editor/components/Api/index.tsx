@@ -28,7 +28,7 @@ interface FlowProps extends Partial<GraphReactEventProps> {
 
 interface FlowState {}
 
-class Er extends React.Component<FlowProps, FlowState> {
+class Api extends React.Component<FlowProps, FlowState> {
   static defaultProps = {
     graphConfig: {},
   };
@@ -154,4 +154,4 @@ class Er extends React.Component<FlowProps, FlowState> {
   }
 }
 
-export default Er;
+export default Api;
