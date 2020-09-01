@@ -9,8 +9,9 @@ export enum RendererType {
 }
 
 export enum ItemType {
-  Node = 'node',
-  Edge = 'edge',
+  Node = "node",
+  Edge = "edge",
+  RectCombo = "combo-rect",
 }
 
 export enum ItemState {
@@ -24,6 +25,7 @@ export enum ItemState {
 export enum GraphType {
   Flow = 'flow',
   Mind = 'mind',
+  Api = 'api'
 }
 
 export enum GraphMode {

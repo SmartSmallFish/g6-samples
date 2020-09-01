@@ -1,19 +1,19 @@
 import G6 from "@antv/g6";
-import "./nodes/bizErNode";
+import "./nodes/bizApiNode";
 
 function renderNodes({ width, height }) {
   const data = {
     nodes: [
       {
         id: "node1",
-        type: "bizErNode",
+        type: "bizApiNode",
         x: 50,
         y: 50,
         data: [],
       },
       {
         id: "node2",
-        type: "bizErNode",
+        type: "bizApiNode",
         x: 300,
         y: 50,
         data: [],

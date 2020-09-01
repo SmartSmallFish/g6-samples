@@ -1,4 +1,36 @@
 .graph {
   position: relative;
-  height: 500px;
+  height: 650px;
+  background: #f5f5f5;
+}
+
+.itemPanel {
+  display: flex;
+  flex-direction: row;
+  justify-items: flex-start;
+  align-items: center;
+  padding: 24px;
+  background: #ffffff;
+
+  .item {
+    margin-right: 24px;
+    user-select: none;
+
+    img {
+      display: block;
+    }
+
+    .returnNode {
+      display: inline-block;
+      width: 76px;
+      height: 26px;
+      color: rgba(0, 0, 0, 1);
+      background-color: rgba(255, 255, 255, 1);
+      border-radius: 4px;
+      font-size: 14px;
+      line-height: 26px;
+      border: rgba(227, 60, 100, 1) solid 3px;
+      text-align: center;
+    }
+  }
 }

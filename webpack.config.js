@@ -19,42 +19,38 @@ const config = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
-        use: [
-          "style-loader",
-          {
-            loader: "css-loader",
-            options: {
-              importLoaders: 1,
-            },
-          },
-          "postcss-loader",
-        ],
-        exclude: /\.module\.css$/,
-      },
-      {
         test: /\.ts(x)?$/,
         loader: "ts-loader",
         exclude: /node_modules/,
       },
       {
-        test: /\.less$/,
-        use: ["style-loader", "css-loader", "less-loader"],
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+          },
+          "postcss-loader",
+        ],
       },
       {
-        test: /\.css$/,
+        test: /\.less$/,
         use: [
           "style-loader",
           {
             loader: "css-loader",
             options: {
               importLoaders: 1,
-              modules: true,
+              modules: {
+                localIdentName: "[path][name]__[local]--[hash:base64:5]",
+              },
             },
           },
           "postcss-loader",
+          "less-loader",
         ],
-        include: /\.module\.css$/,
       },
       {
         test: /\.svg$/,
@@ -77,7 +73,7 @@ const config = {
     extensions: [".js", ".jsx", ".tsx", ".ts"],
     alias: {
       "react-dom": "@hot-loader/react-dom",
-      "@": resolve('./src/editor'),
+      "@": resolve("./src/editor"),
     },
   },
   devServer: {

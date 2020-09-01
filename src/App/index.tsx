@@ -1,6 +1,6 @@
 import React from "react";
-import Editor, { Api } from "@/index";
-// import styles from "./index.less";
+import Editor, { Api, ItemPanel, Item } from "@/index";
+import styles from './index.less';
 
 const data = {
   nodes: [
@@ -26,7 +26,7 @@ const data = {
     },
     {
       id: "3",
-      type: "bizErField",
+      type: "bizApiField",
       x: 650,
       y: 100,
       data: {
@@ -37,7 +37,7 @@ const data = {
     },
     {
       id: "4",
-      type: "bizErField",
+      type: "bizApiField",
       x: 650,
       y: 140,
       data: {
@@ -76,9 +76,40 @@ const data = {
 function App() {
   return (
     <Editor>
+      <ItemPanel
+      className={styles.itemPanel}
+      >
+        <Item
+          className={styles.item}
+          model={{
+            type: "circle",
+            size: 50,
+            label: "circle",
+          }}
+        >
+          <img
+            src="https://gw.alicdn.com/tfs/TB1IRuSnRr0gK0jSZFnXXbRRXXa-110-112.png"
+            width="55"
+            height="56"
+            draggable={false}
+          />
+        </Item>
+        <Item
+          className={styles.item}
+          model={{
+            size: [150, 200],
+            type: "combo-rect",
+            data: {
+              title: "用户信息列表",
+              desc: "主体数据",
+            },
+          }}
+        >
+          <span className={styles.returnNode}>返回</span>
+        </Item>
+      </ItemPanel>
       <Api
-        // className={styles.graph}
-        style={{ position: "relative", height: 600, background: "#f5f5f5" }}
+        className={styles.graph}
         data={data}
       />
     </Editor>

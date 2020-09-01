@@ -9,26 +9,26 @@ import { FLOW_CONTAINER_ID, GraphType } from "@/common/constants";
 import {
   Graph,
   GraphOptions,
-  FlowData,
   GraphEvent,
   GraphReactEventProps,
 } from "@/common/interfaces";
+import { GraphData as IGraphData } from "@antv/g6/lib/types";
 import behaviorManager from "@/common/behaviorManager";
 import GraphComponent from "@/components/Graph";
 
 import "./behavior";
 
-interface FlowProps extends Partial<GraphReactEventProps> {
+interface ApiProps extends Partial<GraphReactEventProps> {
   style?: React.CSSProperties;
   className?: string;
-  data: FlowData;
+  data: IGraphData;
   graphConfig?: Partial<GraphOptions>;
   customModes?: (mode: string, behaviors: any) => object;
 }
 
-interface FlowState {}
+interface ApiState {}
 
-class Api extends React.Component<FlowProps, FlowState> {
+class Api extends React.Component<ApiProps, ApiState> {
   static defaultProps = {
     graphConfig: {},
   };
@@ -117,21 +117,13 @@ class Api extends React.Component<FlowProps, FlowState> {
       height,
       modes,
       defaultNode: {
-        type: "bizErNode",
+        type: "bizApiNode",
       },
       defaultEdge: {
         type: "bizFlowEdge",
       },
       defaultCombo: {
-        // The type of the combos. You can also assign type in the data of combos
         type: "combo-rect",
-        // ... Other global configurations for combos
-        // anchorPoints: [
-        //   [0, 0.5],
-        //   [1, 0.5],
-        //   [0.5, 0],
-        //   [0.5, 1],
-        // ],
       },
       ...graphConfig,
       groupType: "rect",

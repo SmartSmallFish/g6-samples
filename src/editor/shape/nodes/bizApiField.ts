@@ -25,7 +25,7 @@ interface ComboField {
   value: string;
 }
 
-const bizErField: CustomNode = {
+const bizApiField: CustomNode = {
   options: {
     size: [COMMON_NODE_WIDTH, NODE_FIELD_HEIGHT],
     wrapperStyle: {
@@ -262,4 +262,4 @@ const bizErField: CustomNode = {
   },
 };
 
-G6.registerNode("bizErField", bizErField);
+G6.registerNode("bizApiField", bizApiField);

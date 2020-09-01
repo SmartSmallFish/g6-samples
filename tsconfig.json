@@ -9,14 +9,11 @@
     "jsx": "react",
     "noImplicitThis": true,
     "strictBindCallApply": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/*": [
         "src/editor/*"
       ]
     }
-  },
-  "include": [
-    "./src/**/*"
-  ]
+  }
 }

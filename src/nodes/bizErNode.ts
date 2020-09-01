@@ -2,7 +2,7 @@ import G6 from "@antv/g6";
 import { CustomNode, Item } from "@/common/interfaces";
 import { setAnchorPointsState } from "@/shape/common/anchor";
 
-const bizErNode: CustomNode = {
+const bizApiNode: CustomNode = {
   afterSetState(name: string, value: string | boolean, item: Item) {
     setAnchorPointsState.call(this, name, value, item);
   },
@@ -17,4 +17,4 @@ const bizErNode: CustomNode = {
   },
 };
 
-G6.registerNode("bizErNode", bizErNode, "bizNode");
+G6.registerNode("bizApiNode", bizApiNode, "bizNode");
