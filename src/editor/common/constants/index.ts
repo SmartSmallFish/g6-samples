@@ -11,7 +11,7 @@ export enum RendererType {
 export enum ItemType {
   Node = "node",
   Edge = "edge",
-  RectCombo = "combo-rect",
+  Combo = "combo",
 }
 
 export enum ItemState {

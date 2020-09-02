@@ -106,9 +106,7 @@ const dragAddNodeBehavior: DragAddNodeBehavior = {
     const commandManager: CommandManager = graph.get('commandManager');
 
     commandManager.execute(graph, EditorCommand.Add, {
-      // type: ItemType.Node,
-      // type: ItemType.RectCombo,
-      type: 'combo',
+      type: model.type === "combo-rect" ? ItemType.Combo : ItemType.Node,
       model: {
         id: guid(),
         x,
