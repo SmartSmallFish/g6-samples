@@ -13,7 +13,9 @@
     "start": "webpack-dev-server --hot --mode development"
   },
   "dependencies": {
+    "@ant-design/compatible": "^1.0.5",
     "@antv/g6": "^3.6.1",
+    "antd": "^4.6.2",
     "lodash": "^4.17.20",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
