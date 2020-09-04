@@ -12,6 +12,7 @@ export enum ItemType {
   Node = "node",
   Edge = "edge",
   Combo = "combo",
+  ApiField = "bizApiField",
 }
 
 export enum ItemState {
@@ -35,10 +36,11 @@ export enum GraphMode {
 }
 
 export enum GraphState {
-  NodeSelected = 'nodeSelected',
-  EdgeSelected = 'edgeSelected',
-  MultiSelected = 'multiSelected',
-  CanvasSelected = 'canvasSelected',
+  NodeSelected = "nodeSelected",
+  EdgeSelected = "edgeSelected",
+  MultiSelected = "multiSelected",
+  CanvasSelected = "canvasSelected",
+  CombosSelected = "comboSelected",
 }
 
 export enum LabelState {

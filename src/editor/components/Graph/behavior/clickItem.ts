@@ -1,7 +1,14 @@
-import { isMind, isEdge, getGraphState, clearSelectedState } from '@/utils';
-import { ItemState, GraphState, EditorEvent } from '@/common/constants';
+import {
+  isMind,
+  isEdge,
+  getGraphState,
+  clearSelectedState,
+  isApiField,
+} from "@/utils";
+import { ItemState, GraphState, EditorEvent, ItemType } from '@/common/constants';
 import { Item, Behavior } from '@/common/interfaces';
 import behaviorManager from '@/common/behaviorManager';
+import { ComboConfig } from "@antv/g6/lib/types";
 
 interface ClickItemBehavior extends Behavior {
   /** 处理点击事件 */
@@ -34,19 +41,27 @@ const clickItemBehavior: ClickItemBehavior & ThisType<ClickItemBehavior & Defaul
 
   getEvents() {
     return {
-      'node:click': 'handleItemClick',
-      'edge:click': 'handleItemClick',
-      'canvas:click': 'handleCanvasClick',
-      keydown: 'handleKeyDown',
-      keyup: 'handleKeyUp',
+      "combo:click": "handleItemClick",
+      "node:click": "handleItemClick",
+      "edge:click": "handleItemClick",
+      "canvas:click": "handleCanvasClick",
+      keydown: "handleKeyDown",
+      keyup: "handleKeyUp",
     };
   },
 
-  handleItemClick({ item }) {
+  handleItemClick({ item: clickedItem }) {
     const { graph } = this;
 
-    if (isMind(graph) && isEdge(item)) {
+    if ((isMind(graph) && isEdge(clickedItem))) {
       return;
+    }
+
+    // 通过combo内的节点找到外部的combo
+    let item = clickedItem;
+    if (isApiField(clickedItem)) {
+      const itemModel = item.getModel() as ComboConfig;
+      item = graph.findById(itemModel.comboId as string);
     }
 
     const isSelected = item.hasState(ItemState.Selected);
@@ -63,8 +78,9 @@ const clickItemBehavior: ClickItemBehavior & ThisType<ClickItemBehavior & Defaul
       }
     }
 
+    const graphState = getGraphState(graph);
     graph.emit(EditorEvent.onGraphStateChange, {
-      graphState: getGraphState(graph),
+      graphState,
     });
   },
 

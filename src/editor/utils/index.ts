@@ -1,6 +1,7 @@
 import G6 from '@antv/g6';
 import { ItemType, ItemState, GraphState, EditorEvent } from '@/common/constants';
 import { Graph, TreeGraph, EdgeModel, Item, Node, Edge } from '@/common/interfaces';
+import { ComboConfig } from '@antv/g6/lib/types';
 
 /** 生成唯一标识 */
 export function guid() {
@@ -64,6 +65,18 @@ export function isEdge(item: Item) {
   return item.getType() === ItemType.Edge;
 }
 
+/** 判断是否边线 */
+export function isApiField(item: Item) {
+  const itemModel = item.getModel() as ComboConfig;
+  return itemModel.type === ItemType.ApiField;
+}
+
+/** 获取选中Combo */
+export function getSelectedCombos(graph: Graph): Node[] {
+  // return graph.findAllByState(ItemType.Combo, ItemState.Selected);
+  return graph.getCombos();
+}
+
 /** 获取选中节点 */
 export function getSelectedNodes(graph: Graph): Node[] {
   return graph.findAllByState(ItemType.Node, ItemState.Selected);
@@ -83,8 +96,13 @@ export function getHighlightEdges(graph: Graph): Edge[] {
 export function getGraphState(graph: Graph): GraphState {
   let graphState: GraphState = GraphState.MultiSelected;
 
+  const selectedCombos = getSelectedCombos(graph);
   const selectedNodes = getSelectedNodes(graph);
   const selectedEdges = getSelectedEdges(graph);
+
+  if (selectedCombos.length === 1 && !selectedEdges.length) {
+    graphState = GraphState.CombosSelected;
+  }
 
   if (selectedNodes.length === 1 && !selectedEdges.length) {
     graphState = GraphState.NodeSelected;
@@ -94,7 +112,11 @@ export function getGraphState(graph: Graph): GraphState {
     graphState = GraphState.EdgeSelected;
   }
 
-  if (!selectedNodes.length && !selectedEdges.length) {
+  if (
+    !selectedCombos.length &&
+    !selectedNodes.length &&
+    !selectedEdges.length
+  ) {
     graphState = GraphState.CanvasSelected;
   }
 

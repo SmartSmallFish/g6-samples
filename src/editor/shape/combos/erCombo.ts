@@ -162,19 +162,7 @@ const comboRect: IShapeOptions = {
     setAnchorPointsState.call(this, name, value, item);
   },
 
-  getAnchorPoints(cfg: NodeModel) {
-    // const self = this;
-    // const style = self.getShapeStyle(cfg);
-    // const { width, height } = style;
-    // const comboOriginPoint = {
-    //   x: -width / 2 - (cfg.padding[3] - cfg.padding[1]) / 2,
-    //   y: -height / 2 - (cfg.padding[0] - cfg.padding[2]) / 2,
-    // };
-    // const { x, y } = comboOriginPoint;
-    // return [
-    //   [x, y + 0.5 * height],
-    //   [x + style.width, y + 0.5 * style.height],
-    // ];
+  getAnchorPoints() {
     return [
       [0, 0.5],
       [1, 0.5],

@@ -1,6 +1,6 @@
 import React from "react";
 import Editor, { Api, ItemPanel, Item } from "@/index";
-import { NodePanel, EdgePanel, MultiPanel, CanvasPanel } from "./Panel";
+import { ComboPanel, NodePanel, EdgePanel, MultiPanel, CanvasPanel } from "./Panel";
 import styles from "./index.less";
 
 const data = {
@@ -11,6 +11,7 @@ const data = {
       label: "Node1",
       x: 50,
       y: 50,
+      type: "bizFlowNode",
     },
     {
       id: "1",
@@ -18,12 +19,14 @@ const data = {
       label: "Node2",
       x: 50,
       y: 200,
+      type: "bizFlowNode",
     },
     {
       id: "2",
       label: "Node3",
       x: 250,
       y: 400,
+      type: "bizFlowNode",
     },
     {
       id: "3",
@@ -112,6 +115,7 @@ function App() {
         </div>
         <div className={styles.detailPanelWrapper}>
           <div className={styles.detailPanel}>
+            <ComboPanel />
             <NodePanel />
             <EdgePanel />
             <MultiPanel />

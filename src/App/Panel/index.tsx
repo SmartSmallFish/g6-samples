@@ -91,26 +91,33 @@ class Panel extends React.Component<PanelProps, PanelState> {
   };
 
   renderCanvasDetail = () => {
+    const { form } = this.props;
     return <p>Select a node or edge :)</p>;
+  };
+
+  renderComboDetail = () => {
+    return <p>this item is a combo</p>;
   };
 
   render() {
     const { type } = this.props;
-    // if (type === "canvas") return null;
-      return (
-        <Card title={upperFirst(type)} bordered={false}>
-          {type === "node" && this.renderNodeDetail()}
-          {type === "edge" && this.renderEdgeDetail()}
-          {type === "multi" && this.renderMultiDetail()}
-          {type === "canvas" && this.renderCanvasDetail()}
-        </Card>
-      );
+
+    return (
+      <Card title={upperFirst(type)} bordered={false}>
+        {type === "node" && this.renderNodeDetail()}
+        {type === "edge" && this.renderEdgeDetail()}
+        {type === "multi" && this.renderMultiDetail()}
+        {type === "canvas" && this.renderCanvasDetail()}
+        {type === "combo" && this.renderComboDetail()}
+      </Card>
+    );
   }
 }
 
 const WrappedPanel = LegacyForm.create<PanelProps>({
   mapPropsToFields(props) {
-    const { type, nodes, edges } = props;
+    const { type, combos, nodes, edges } = props;
+    console.log("object>>>>", type, combos);
 
     let label = "";
 
@@ -132,6 +139,7 @@ const WrappedPanel = LegacyForm.create<PanelProps>({
 
 type WrappedPanelProps = Omit<PanelProps, keyof FormComponentProps>;
 
+
 export const NodePanel = DetailPanel.create<WrappedPanelProps>("node")(
   WrappedPanel
 );
@@ -142,5 +150,8 @@ export const MultiPanel = DetailPanel.create<WrappedPanelProps>("multi")(
   WrappedPanel
 );
 export const CanvasPanel = DetailPanel.create<WrappedPanelProps>("canvas")(
+  WrappedPanel
+);
+export const ComboPanel = DetailPanel.create<WrappedPanelProps>("combo")(
   WrappedPanel
 );

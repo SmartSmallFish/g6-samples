@@ -24,7 +24,7 @@ import {
   IG6GraphEvent as IGraphEvent,
 } from '@antv/g6/lib/types';
 import { ShapeOptions as IShapeOptions } from '@antv/g6/lib/interface/shape';
-import { INode, IEdge } from '@antv/g6/lib/interface/item';
+import { INode, IEdge, ICombo } from '@antv/g6/lib/interface/item';
 
 export interface GShape extends IGShape {}
 export interface GGroup extends IGGroup {}
@@ -50,7 +50,8 @@ export interface CustomShape extends IShapeOptions {}
 export interface CustomNode extends CustomShape {}
 export interface CustomEdge extends CustomShape {}
 
-export type Item = Node | Edge;
+export type Item = Combo | Node | Edge;
+export interface Combo extends ICombo {}
 export interface Node extends INode {}
 export interface Edge extends IEdge {}
 
