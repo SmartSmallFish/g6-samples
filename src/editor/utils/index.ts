@@ -73,8 +73,7 @@ export function isApiField(item: Item) {
 
 /** 获取选中Combo */
 export function getSelectedCombos(graph: Graph): Node[] {
-  // return graph.findAllByState(ItemType.Combo, ItemState.Selected);
-  return graph.getCombos();
+  return graph.findAllByState(ItemType.Combo, ItemState.Selected);
 }
 
 /** 获取选中节点 */

@@ -5,7 +5,7 @@ import {
   clearSelectedState,
   isApiField,
 } from "@/utils";
-import { ItemState, GraphState, EditorEvent, ItemType } from '@/common/constants';
+import { ItemState, GraphState, EditorEvent } from '@/common/constants';
 import { Item, Behavior } from '@/common/interfaces';
 import behaviorManager from '@/common/behaviorManager';
 import { ComboConfig } from "@antv/g6/lib/types";

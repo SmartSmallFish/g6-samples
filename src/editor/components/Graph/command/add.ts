@@ -4,7 +4,7 @@ import { NodeModel, EdgeModel } from '@/common/interfaces';
 import { BaseCommand, baseCommand } from '@/components/Graph/command/base';
 
 export interface AddCommandParams {
-  type: ItemType;
+  type: ItemType.Node | ItemType.Edge | ItemType.Combo;
   model: NodeModel | EdgeModel;
 }
 

@@ -1,27 +1,11 @@
-import React from "react";
-import upperFirst from "lodash/upperFirst";
-import {
-  Card,
-  Input
-} from "antd";
-import { Form as LegacyForm } from "@ant-design/compatible";
+import React, { Fragment } from "react";
 import { FormComponentProps } from "@ant-design/compatible/lib/form";
 import { DetailPanel, withEditorContext } from "@/index";
 import { EditorContextProps } from "@/components/EditorContext";
 import { DetailPanelComponentProps } from "@/components/DetailPanel";
+import ComboDetailForm from "./components/ComboDetailForm";
 
-const { Item } = LegacyForm;
-
-const formItemLayout = {
-  labelCol: {
-    span: 5,
-  },
-  wrapperCol: {
-    span: 19,
-  },
-};
-
-interface PanelProps
+export interface PanelProps
   extends FormComponentProps,
     EditorContextProps,
     DetailPanelComponentProps {}
@@ -29,129 +13,49 @@ interface PanelProps
 interface PanelState {}
 
 class Panel extends React.Component<PanelProps, PanelState> {
-  handleSubmit = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (e && e.preventDefault) {
-      e.preventDefault();
-    }
-
-    const { form } = this.props;
-
-    form.validateFieldsAndScroll((err, values) => {
-      if (err) {
-        return;
-      }
-
-      const { type, nodes, edges, executeCommand } = this.props;
-
-      const item = type === "node" ? nodes[0] : edges[0];
-
-      if (!item) {
-        return;
-      }
-
-      executeCommand("update", {
-        id: item.get("id"),
-        updateModel: {
-          ...values,
-        },
-      });
-    });
-  };
-
-  renderNodeDetail = () => {
-    const { form } = this.props;
-
-    return (
-      <LegacyForm>
-        <Item label="Label" {...formItemLayout}>
-          {form.getFieldDecorator("label", {
-            initialValue: "",
-          })(<Input onBlur={this.handleSubmit} />)}
-        </Item>
-      </LegacyForm>
-    );
-  };
-
-  renderEdgeDetail = () => {
-    const { form } = this.props;
-
-    return (
-      <LegacyForm>
-        <Item label="Label" {...formItemLayout}>
-          {form.getFieldDecorator("label", {
-            initialValue: "",
-          })(<Input onBlur={this.handleSubmit} />)}
-        </Item>
-      </LegacyForm>
-    );
+  renderCanvasDetail = () => {
+    return <p>Select a node or edge :)</p>;
   };
 
   renderMultiDetail = () => {
     return null;
   };
 
-  renderCanvasDetail = () => {
-    const { form } = this.props;
-    return <p>Select a node or edge :)</p>;
+  renderComboDetail = () => {
+    return <ComboDetailForm {...this.props} />;
   };
 
-  renderComboDetail = () => {
-    return <p>this item is a combo</p>;
+  renderNodeDetail = () => {
+    const { nodes } = this.props;
+    console.log("object>>>>", nodes);
+  };
+
+  renderEdgeDetail = () => {
+    const { edges } = this.props;
+    console.log("object>>>>", edges);
   };
 
   render() {
     const { type } = this.props;
 
     return (
-      <Card title={upperFirst(type)} bordered={false}>
+      <Fragment>
+        {type === "canvas" && this.renderCanvasDetail()}
+        {type === "multi" && this.renderMultiDetail()}
+        {type === "combo" && this.renderComboDetail()}
         {type === "node" && this.renderNodeDetail()}
         {type === "edge" && this.renderEdgeDetail()}
-        {type === "multi" && this.renderMultiDetail()}
-        {type === "canvas" && this.renderCanvasDetail()}
-        {type === "combo" && this.renderComboDetail()}
-      </Card>
+      </Fragment>
     );
   }
 }
 
-const WrappedPanel = LegacyForm.create<PanelProps>({
-  mapPropsToFields(props) {
-    const { type, combos, nodes, edges } = props;
-    console.log("object>>>>", type, combos);
+const WrappedPanel = withEditorContext(Panel);
 
-    let label = "";
-
-    if (type === "node") {
-      label = nodes[0].getModel().label;
-    }
-
-    if (type === "edge") {
-      label = edges[0].getModel().label;
-    }
-
-    return {
-      label: LegacyForm.createFormField({
-        value: label,
-      }),
-    };
-  },
-})(withEditorContext(Panel));
-
-type WrappedPanelProps = Omit<PanelProps, keyof FormComponentProps>;
-
-
-export const NodePanel = DetailPanel.create<WrappedPanelProps>("node")(
+export const NodePanel = DetailPanel.create<PanelProps>("node")(WrappedPanel);
+export const EdgePanel = DetailPanel.create<PanelProps>("edge")(WrappedPanel);
+export const MultiPanel = DetailPanel.create<PanelProps>("multi")(WrappedPanel);
+export const CanvasPanel = DetailPanel.create<PanelProps>("canvas")(
   WrappedPanel
 );
-export const EdgePanel = DetailPanel.create<WrappedPanelProps>("edge")(
-  WrappedPanel
-);
-export const MultiPanel = DetailPanel.create<WrappedPanelProps>("multi")(
-  WrappedPanel
-);
-export const CanvasPanel = DetailPanel.create<WrappedPanelProps>("canvas")(
-  WrappedPanel
-);
-export const ComboPanel = DetailPanel.create<WrappedPanelProps>("combo")(
-  WrappedPanel
-);
+export const ComboPanel = DetailPanel.create<PanelProps>("combo")(WrappedPanel);
