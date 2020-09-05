@@ -28,11 +28,13 @@ class Panel extends React.Component<PanelProps, PanelState> {
   renderNodeDetail = () => {
     const { nodes } = this.props;
     console.log("object>>>>", nodes);
+    return null;
   };
 
   renderEdgeDetail = () => {
     const { edges } = this.props;
     console.log("object>>>>", edges);
+    return null;
   };
 
   render() {

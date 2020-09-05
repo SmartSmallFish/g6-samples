@@ -1,10 +1,19 @@
-import { isMind, getSelectedNodes, getSelectedEdges, setSelectedItems } from '@/utils';
+import {
+  isMind,
+  getSelectedCombos,
+  getSelectedNodes,
+  getSelectedEdges,
+  setSelectedItems,
+} from "@/utils";
 import { LabelState, EditorEvent } from '@/common/constants';
 import { Graph, Item, Node, Edge, Command } from '@/common/interfaces';
+import { ICombo } from '@antv/g6/lib/interface/item';
 
 export interface BaseCommand<P = object, G = Graph> extends Command<P, G> {
   /** 判断是否脑图 */
   isMind(graph: G): boolean;
+  /** 获取选中Combo */
+  getSelectedCombos(graph: G): ICombo[];
   /** 获取选中节点 */
   getSelectedNodes(graph: G): Node[];
   /** 获取选中连线 */
@@ -41,6 +50,8 @@ export const baseCommand: BaseCommand = {
   shortcuts: [],
 
   isMind,
+
+  getSelectedCombos,
 
   getSelectedNodes,
 

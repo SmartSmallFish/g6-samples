@@ -20,14 +20,29 @@ interface ComboData {
   desc: string;
 }
 
+enum FIELD_STATUS {
+  DELETED = "DELETED",
+  ADD = "ADD",
+}
+
 class ComboDetailForm extends Component<PanelProps, FormState> {
   constructor(props) {
     super(props);
     this.state = {
       ...this.initState(props),
+      // nodes: [],
+      // comboData: { comboId: "", title: "", desc: "" },
     };
+    console.log("constructor>>>>>>>");
   }
 
+  // componentDidMount() {
+  //   console.log("componentDidMount>>>>>>>");
+  //   this.setState({
+  //     ...this.initState(this.props)
+  //   })
+  // }
+  
   initState = (props): FormState => {
     const { combos } = props;
     const combo = combos[0];
@@ -75,11 +90,15 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
   };
 
   addField = () => {
-    const { nodes } = this.state;
+    const {
+      nodes,
+      comboData: { comboId },
+    } = this.state;
     const node = {
+      comboId,
       id: uniqueId(),
       data: {},
-      isAdd: true,
+      fieldStatus: FIELD_STATUS.ADD,
     } as NodeConfig;
     nodes.push(node);
     this.setState({ nodes });
@@ -87,43 +106,54 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
 
   delField = (node: NodeConfig) => {
     const { nodes } = this.state;
-    const { isAdd } = node;
+    const { fieldStatus } = node;
     const index = findIndex(nodes, (o) => {
       return o.id === node.id;
     });
     if (index !== -1) {
-      if (isAdd) {
+      if (fieldStatus === FIELD_STATUS.ADD) {
         nodes.splice(index, 1);
       } else {
-        nodes[index].isDeleted = true;
+        nodes[index].fieldStatus = FIELD_STATUS.DELETED;
       }
       this.setState({ nodes });
     }
   };
 
   saveCombo = () => {
-    const { form } = this.props;
+    const { nodes } = this.state;
+    const { form, graph } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-      console.log('object>>>>>',values)
-      // const { type, combos, nodes, edges, executeCommand } = this.props;
-
-      // const item = type === "node" ? nodes[0] : edges[0];
-
-      // if (!item) {
-      //   return;
-      // }
-
-      // executeCommand("update", {
-      //   id: item.get("id"),
-      //   updateModel: {
-      //     ...values,
-      //   },
-      // });
+      const { title, desc, ...rest } = values;
+      const { executeCommand } = this.props;
+      map(Object.values(rest), (node) => {
+        if (node.fieldStatus === FIELD_STATUS.ADD) {
+          // executeCommand("update", {
+          //   id: node.id,
+          //   updateModel: {
+          //     ...node,
+          //   },
+          // });
+        } else if (node.fieldStatus === FIELD_STATUS.DELETED) {
+          console.log('remove>>>>>>', node.id)
+          graph.removeItem(node.id);
+          graph.updateCombos();
+          // executeCommand("remove", {
+          //   id: node.id
+          // });
+        } else {
+          executeCommand("update", {
+            id: node.id,
+            updateModel: {
+              ...node,
+            },
+          });
+        }
+      });
     });
-  };
   };
 
   delCombo = () => {
@@ -138,7 +168,7 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
     const { form } = this.props;
 
     const visibleNodes = filter(nodes, (node) => {
-      return !node.isDeleted;
+      return node.fieldStatus !== FIELD_STATUS.DELETED;
     });
 
     const formItems = map(visibleNodes, (node: NodeConfig, index: number) => {

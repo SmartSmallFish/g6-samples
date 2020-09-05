@@ -2,6 +2,7 @@ import G6 from '@antv/g6';
 import { ItemType, ItemState, GraphState, EditorEvent } from '@/common/constants';
 import { Graph, TreeGraph, EdgeModel, Item, Node, Edge } from '@/common/interfaces';
 import { ComboConfig } from '@antv/g6/lib/types';
+import { ICombo } from '@antv/g6/lib/interface/item';
 
 /** 生成唯一标识 */
 export function guid() {
@@ -72,7 +73,7 @@ export function isApiField(item: Item) {
 }
 
 /** 获取选中Combo */
-export function getSelectedCombos(graph: Graph): Node[] {
+export function getSelectedCombos(graph: Graph): ICombo[] {
   return graph.findAllByState(ItemType.Combo, ItemState.Selected);
 }
 

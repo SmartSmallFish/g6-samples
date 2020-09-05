@@ -20,9 +20,15 @@ const updateCommand: BaseCommand<UpdateCommandParams, Graph & TreeGraph> = {
   },
 
   canExecute(graph) {
+    const selectedCombos = this.getSelectedCombos(graph);
     const selectedNodes = this.getSelectedNodes(graph);
     const selectedEdges = this.getSelectedEdges(graph);
-    return (selectedNodes.length || selectedEdges.length) && (selectedNodes.length === 1 || selectedEdges.length === 1)
+    return (selectedCombos.length ||
+      selectedNodes.length ||
+      selectedEdges.length) &&
+      (selectedCombos.length === 1 ||
+        selectedNodes.length === 1 ||
+        selectedEdges.length === 1)
       ? true
       : false;
   },

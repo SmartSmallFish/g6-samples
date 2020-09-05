@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSelectedNodes, getSelectedEdges, getSelectedCombos } from "@/utils";
-import { GraphState, EditorEvent } from '@/common/constants';
+import { GraphState, EditorEvent, ItemType } from '@/common/constants';
 import { EditorContextProps, withEditorContext } from '@/components/EditorContext';
 import { Combo, Node, Edge, GraphStateEvent } from "@/common/interfaces";
 
@@ -38,7 +38,7 @@ class DetailPanel {
           const { graph } = this.props;
           const { graphState } = this.state;
 
-          if (graphState !== `${type}Selected`) {
+          if (type === "canvas" || graphState !== `${type}Selected`) {
             return null;
           }
 

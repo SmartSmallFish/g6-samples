@@ -18,7 +18,8 @@ const WRAPPER_HORIZONTAL_PADDING = 10;
 
 const WRAPPER_CLASS_NAME = "field-wrapper";
 const CONTENT_CLASS_NAME = "field-content";
-const LABEL_CLASS_NAME = "field-label";
+const FIELD_LABEL_CLASS_NAME = "field-label";
+const FIELD_VALUE_CLASS_NAME = "field-value";
 
 interface ComboField {
   label: string;
@@ -119,20 +120,10 @@ const bizApiField: CustomNode = {
     const [width, height] = this.getSize(model);
     const { labelStyle } = this.getOptions(model);
     const { data } = model;
-    const { label, value } = data as ComboField; 
-    let fontSize = 12;
+    const { label, value } = data as ComboField;
 
-    // const shape = group.findByClassName(LABEL_CLASS_NAME);
-    // console.log("object>>>>>>", shape);
-    // if (shape) {
-    //   const attrs = shape.attr();
-    //   console.log("object>>>>>>", attrs);
-    //   fontSize = attrs.fontSize;
-    // }
-
-    const labelTextWidth = getLetterWidth(label, fontSize);
     group.addShape("text", {
-      className: LABEL_CLASS_NAME,
+      className: FIELD_LABEL_CLASS_NAME,
       draggable: true,
       attrs: {
         x: WRAPPER_HORIZONTAL_PADDING,
@@ -142,9 +133,8 @@ const bizApiField: CustomNode = {
       },
     });
 
-    const valueTextWidth = getLetterWidth(value, fontSize);
     const shape = group.addShape("text", {
-      className: LABEL_CLASS_NAME,
+      className: FIELD_VALUE_CLASS_NAME,
       draggable: true,
       attrs: {
         x: width / 2,
@@ -156,35 +146,18 @@ const bizApiField: CustomNode = {
     return shape;
   },
 
-  setLabelText(model: NodeModel, group: GGroup) {
-    const shape = group.findByClassName(LABEL_CLASS_NAME);
-
-    if (!shape) {
-      return;
-    }
-
-    const [width] = this.getSize(model);
-    const { fontStyle, fontWeight, fontSize, fontFamily } = shape.attr();
-
-    const text = model.label as string;
-    const font = `${fontStyle} ${fontWeight} ${fontSize}px ${fontFamily}`;
-
-    shape.attr(
-      "text",
-      optimizeMultilineText(
-        text,
-        font,
-        2,
-        width
-        // width - WRAPPER_HORIZONTAL_PADDING * 2
-      )
-    );
-  },
-
   update(model, item) {
     const group = item.getContainer();
+    const labelShape = group.findByClassName(FIELD_LABEL_CLASS_NAME);
+    if (labelShape) {
+      group.removeChild(labelShape);
+    }
+    const valueShape = group.findByClassName(FIELD_VALUE_CLASS_NAME);
+    if (valueShape) {
+      group.removeChild(valueShape);
+    }
 
-    this.setLabelText(model, group);
+    this.drawLabel(model, group);
   },
 
   setState(name, value, item) {
@@ -192,29 +165,32 @@ const bizApiField: CustomNode = {
     const model = item.getModel();
     const states = item.getStates() as ItemState[];
 
-    [WRAPPER_CLASS_NAME, CONTENT_CLASS_NAME, LABEL_CLASS_NAME].forEach(
-      (className) => {
-        const shape = group.findByClassName(className);
-        const options = this.getOptions(model);
+    [
+      WRAPPER_CLASS_NAME,
+      CONTENT_CLASS_NAME,
+      FIELD_LABEL_CLASS_NAME,
+      FIELD_VALUE_CLASS_NAME,
+    ].forEach((className) => {
+      const shape = group.findByClassName(className);
+      const options = this.getOptions(model);
 
-        const shapeName = className.split("-")[1];
+      const shapeName = className.split("-")[1];
 
-        shape.attr({
-          ...options[`${shapeName}Style`],
-        });
+      shape.attr({
+        ...options[`${shapeName}Style`],
+      });
 
-        states.forEach((state) => {
-          if (
-            options.stateStyles[state] &&
-            options.stateStyles[state][`${shapeName}Style`]
-          ) {
-            shape.attr({
-              ...options.stateStyles[state][`${shapeName}Style`],
-            });
-          }
-        });
-      }
-    );
+      states.forEach((state) => {
+        if (
+          options.stateStyles[state] &&
+          options.stateStyles[state][`${shapeName}Style`]
+        ) {
+          shape.attr({
+            ...options.stateStyles[state][`${shapeName}Style`],
+          });
+        }
+      });
+    });
 
     if (name === ItemState.Selected) {
       const wrapperShape = group.findByClassName(WRAPPER_CLASS_NAME);

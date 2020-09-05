@@ -30,10 +30,10 @@ export default function FormField(props) {
 
   function triggerChange(changedValue) {
     const { onChange, value } = props;
+    value.data = { ...value.data, ...changedValue };
     if (onChange) {
       onChange({
         ...value,
-        ...changedValue,
       });
     }
   }
