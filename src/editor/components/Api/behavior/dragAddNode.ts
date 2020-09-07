@@ -96,10 +96,10 @@ const dragAddNodeBehavior: DragAddNodeBehavior = {
 
     const model: Partial<NodeModel> = global.component.itemPanel.model;
 
-    if (model.center === 'topLeft') {
-      x -= width / 2;
-      y -= height / 2;
-    }
+    // if (model.center === 'topLeft') {
+    //   x -= width / 2;
+    //   y -= height / 2;
+    // }
 
     this.shape.remove(true);
 

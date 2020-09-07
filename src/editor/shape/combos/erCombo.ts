@@ -46,6 +46,7 @@ const comboRect: IShapeOptions = {
       paddingTop += COMBO_DESC_HEIGHT + COMNO_FIELD_GAP_HEIGHT;
     }
     cfg.padding = cfg.padding || [paddingTop, 5, 2, 5];
+    // cfg.padding = [paddingTop, 5, 2, 5];
     const style = self.getShapeStyle(cfg);
     const comboOriginPoint = getComboOriginPoint(self, cfg);
     const { x, y } = comboOriginPoint;
@@ -58,13 +59,13 @@ const comboRect: IShapeOptions = {
         ...style,
         x,
         y,
-        // width: style.width,
-        // height: style.height,
-        width: COMMON_FIELD_WIDTH,
-        height:
-          paddingTop +
-          COMNO_FIELD_GAP_HEIGHT * 2 +
-          childrenLen * COMMON_FIELD_HEIGHT,
+        width: style.width,
+        height: style.height,
+        // width: COMMON_FIELD_WIDTH,
+        // height:
+        //   paddingTop +
+        //   COMNO_FIELD_GAP_HEIGHT * 2 +
+        //   childrenLen * COMMON_FIELD_HEIGHT,
         fill: "#FFF",
         stroke: "#7947eb",
         lineWidth: COMBO_BORDER,
@@ -73,7 +74,7 @@ const comboRect: IShapeOptions = {
       },
     });
 
-    self.drawPlaceholder(paddingTop, group, comboOriginPoint);
+    // self.drawPlaceholder(paddingTop, group, comboOriginPoint);
     self.drawTitle(cfg, group, comboOriginPoint);
     self.drawDesc(cfg, group, comboOriginPoint);
 
@@ -198,7 +199,8 @@ const comboRect: IShapeOptions = {
     const group = combo.get("group");
     // this.onAfterUpdate(self, cfg, group);
 
-    this.updateComboStyle(cfg, group);
+    // this.updateComboStyle(cfg, group);
+    console.log("afterUpdate>>>>>>");
     this.updateTitlePosition(self, cfg, group);
     this.updateDescPosition(self, cfg, group);
   },

@@ -6,6 +6,7 @@ import { INode, ICombo } from "@antv/g6/lib/interface/item";
 import { NodeConfig, ComboConfig } from "@antv/g6/lib/types";
 import { executeBatch, guid } from "@/utils";
 import { COMMON_FIELD_HEIGHT } from "@/shape/constants";
+import { getComboOriginPoint } from "@/shape/utils";
 import { PanelProps } from "../../Panel";
 import FormField from "./FormField";
 
@@ -38,11 +39,16 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
   firstFieldPos: { x: number; y: number } = null;
 
   getFirstFieldPos = (nodes: Array<NodeConfig>, combo: ICombo) => {
-    if (nodes[0]) {
-      const { x, y } = nodes[0];
+    // if (nodes[0]) {
+    //   const { x, y } = nodes[0];
+    //   this.firstFieldPos = { x, y };
+    // } else {
+    //   console.log("getFirstFieldPos>>>>", combo);
+      const keyShape = combo.getKeyShape();
+      const BBox = keyShape.getBBox();
+      const { x, y } = BBox;
       this.firstFieldPos = { x, y };
-    } else {
-    }
+    // }
   };
 
   initState = (props): FormState => {
@@ -128,10 +134,13 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
               x: this.firstFieldPos.x,
               y: this.firstFieldPos.y + index * COMMON_FIELD_HEIGHT,
             };
-            executeCommand("add", {
-              id: node.id,
-              model,
-            });
+          // graph.addItem(model);
+          graph.add('node', model);
+
+            // executeCommand("add", {
+            //   id: node.id,
+            //   model,
+            // });
           } else {
             executeCommand("update", {
               id: node.id,
@@ -148,7 +157,8 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
           comboData: { comboId },
         } = this.state;
         graph.updateCombo(comboId);
-        graph.refresh();
+        graph.refreshPositions();
+        graph.paint();
       });
     });
   };

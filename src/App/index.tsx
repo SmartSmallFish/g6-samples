@@ -102,7 +102,7 @@ function App() {
             <Item
               className={styles.item}
               model={{
-                size: [100, 70],
+                size: [COMMON_FIELD_WIDTH, 70],
                 type: "combo-rect",
                 data: {
                   title: "用户信息列表",
