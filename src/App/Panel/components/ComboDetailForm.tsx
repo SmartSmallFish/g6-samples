@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from "react";
 import { Input, Button } from "antd";
-import { map, forEach, uniqueId, findIndex, filter } from "lodash";
+import { map, forEach, findIndex, filter } from "lodash";
 import { Form as LegacyForm } from "@ant-design/compatible";
-import { INode } from "@antv/g6/lib/interface/item";
+import { INode, ICombo } from "@antv/g6/lib/interface/item";
 import { NodeConfig, ComboConfig } from "@antv/g6/lib/types";
+import { executeBatch, guid } from "@/utils";
+import { COMMON_FIELD_HEIGHT } from "@/shape/constants";
 import { PanelProps } from "../../Panel";
 import FormField from "./FormField";
 
@@ -30,19 +32,19 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
     super(props);
     this.state = {
       ...this.initState(props),
-      // nodes: [],
-      // comboData: { comboId: "", title: "", desc: "" },
     };
-    console.log("constructor>>>>>>>");
   }
 
-  // componentDidMount() {
-  //   console.log("componentDidMount>>>>>>>");
-  //   this.setState({
-  //     ...this.initState(this.props)
-  //   })
-  // }
-  
+  firstFieldPos: { x: number; y: number } = null;
+
+  getFirstFieldPos = (nodes: Array<NodeConfig>, combo: ICombo) => {
+    if (nodes[0]) {
+      const { x, y } = nodes[0];
+      this.firstFieldPos = { x, y };
+    } else {
+    }
+  };
+
   initState = (props): FormState => {
     const { combos } = props;
     const combo = combos[0];
@@ -52,41 +54,15 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
     const data = comboConfig.data as object;
     const childNodes: Array<NodeConfig> = [];
     forEach(nodes, (node) => {
-      childNodes.push(node.getModel() as NodeConfig);
+      if (!node.destroyed) {
+        childNodes.push(node.getModel() as NodeConfig);
+      }
     });
+    this.getFirstFieldPos(childNodes, combo);
     return {
       nodes: childNodes,
       comboData: { comboId, ...data } as ComboData,
     };
-  };
-
-  handleSubmit = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (e && e.preventDefault) {
-      e.preventDefault();
-    }
-
-    const { form } = this.props;
-
-    form.validateFieldsAndScroll((err, values) => {
-      if (err) {
-        return;
-      }
-
-      // const { type, combos, nodes, edges, executeCommand } = this.props;
-
-      // const item = type === "node" ? nodes[0] : edges[0];
-
-      // if (!item) {
-      //   return;
-      // }
-
-      // executeCommand("update", {
-      //   id: item.get("id"),
-      //   updateModel: {
-      //     ...values,
-      //   },
-      // });
-    });
   };
 
   addField = () => {
@@ -96,7 +72,9 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
     } = this.state;
     const node = {
       comboId,
-      id: uniqueId(),
+      id: guid(),
+      depth: 1,
+      type: "bizApiField",
       data: {},
       fieldStatus: FIELD_STATUS.ADD,
     } as NodeConfig;
@@ -121,37 +99,56 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
   };
 
   saveCombo = () => {
-    const { nodes } = this.state;
-    const { form, graph } = this.props;
+    const { form, graph, combos } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
+      console.log("constructor>>>>", COMMON_FIELD_HEIGHT);
       const { title, desc, ...rest } = values;
+
+      const nodes = Object.values(rest);
+      const delNodes = filter(nodes, (o) => {
+        return o.fieldStatus === FIELD_STATUS.DELETED;
+      });
+      const comboNodes = filter(nodes, (o) => {
+        return o.fieldStatus !== FIELD_STATUS.DELETED;
+      });
+
       const { executeCommand } = this.props;
-      map(Object.values(rest), (node) => {
-        if (node.fieldStatus === FIELD_STATUS.ADD) {
-          // executeCommand("update", {
-          //   id: node.id,
-          //   updateModel: {
-          //     ...node,
-          //   },
-          // });
-        } else if (node.fieldStatus === FIELD_STATUS.DELETED) {
-          console.log('remove>>>>>>', node.id)
+      executeBatch(graph, () => {
+        map(delNodes, (node) => {
+          combos[0].removeNode(node as INode);
           graph.removeItem(node.id);
-          graph.updateCombos();
-          // executeCommand("remove", {
-          //   id: node.id
-          // });
-        } else {
-          executeCommand("update", {
-            id: node.id,
-            updateModel: {
+        });
+        map(comboNodes, (node, index) => {
+          if (node.fieldStatus === FIELD_STATUS.ADD) {
+            const model = {
               ...node,
-            },
-          });
-        }
+              x: this.firstFieldPos.x,
+              y: this.firstFieldPos.y + index * COMMON_FIELD_HEIGHT,
+            };
+            executeCommand("add", {
+              id: node.id,
+              model,
+            });
+          } else {
+            executeCommand("update", {
+              id: node.id,
+              updateModel: {
+                ...node,
+                x: this.firstFieldPos.x,
+                y: this.firstFieldPos.y + index * COMMON_FIELD_HEIGHT,
+              },
+            });
+          }
+        });
+        combos[0].refresh();
+        const {
+          comboData: { comboId },
+        } = this.state;
+        graph.updateCombo(comboId);
+        graph.refresh();
       });
     });
   };
@@ -160,7 +157,8 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
     const {
       comboData: { comboId },
     } = this.state;
-    console.log("delCombo>>>>>", comboId);
+    const { graph } = this.props;
+    graph.removeItem(comboId);
   };
 
   renderForm = () => {

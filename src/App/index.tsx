@@ -1,5 +1,6 @@
 import React from "react";
 import Editor, { Api, ItemPanel, Item } from "@/index";
+import { COMMON_FIELD_WIDTH, COMBO_BORDER } from "@/shape/constants";
 import { ComboPanel, NodePanel, EdgePanel, MultiPanel, CanvasPanel } from "./Panel";
 import styles from "./index.less";
 
@@ -101,7 +102,7 @@ function App() {
             <Item
               className={styles.item}
               model={{
-                size: [150, 200],
+                size: [100, 70],
                 type: "combo-rect",
                 data: {
                   title: "用户信息列表",

@@ -7,13 +7,11 @@ import { setAnchorPointsState } from "@/shape/common/anchor";
 import { getLetterWidth } from "@/utils";
 import { optimizeMultilineText } from "../utils";
 import {
-  COMMON_NODE_WIDTH,
-  INIT_NODE_HEIGHT,
-  NODE_FIELD_HEIGHT,
+  COMMON_FIELD_WIDTH,
+  COMMON_FIELD_HEIGHT,
   NODE_FONT_SIZE,
-} from "./constants";
+} from "../constants";
 
-// const WRAPPER_BORDER_WIDTH = 2;
 const WRAPPER_HORIZONTAL_PADDING = 10;
 
 const WRAPPER_CLASS_NAME = "field-wrapper";
@@ -28,9 +26,9 @@ interface ComboField {
 
 const bizApiField: CustomNode = {
   options: {
-    size: [COMMON_NODE_WIDTH, NODE_FIELD_HEIGHT],
+    size: [COMMON_FIELD_WIDTH, COMMON_FIELD_HEIGHT],
     wrapperStyle: {
-      fill: "transparent",
+      fill: "#F00",
     },
     contentStyle: {
       fill: "transparent",
@@ -42,7 +40,9 @@ const bizApiField: CustomNode = {
     },
     stateStyles: {
       [ItemState.Active]: {
-        wrapperStyle: {},
+        wrapperStyle: {
+          fill: "#fafafa",
+        },
         contentStyle: {},
         labelStyle: {},
       } as any,
@@ -79,6 +79,7 @@ const bizApiField: CustomNode = {
         y: 0,
         width,
         height,
+        radius: 3,
         ...wrapperStyle,
       },
     });

@@ -115,3 +115,12 @@ export function optimizeMultilineText(text: string, font: string, maxRows: numbe
 
   return multilineText.join('\n');
 }
+
+export function getComboOriginPoint(target, cfg) {
+  const style = target.getShapeStyle(cfg);
+  const comboOriginPoint = {
+    x: -style.width / 2 - (cfg.padding[3] - cfg.padding[1]) / 2,
+    y: -style.height / 2 - (cfg.padding[0] - cfg.padding[2]) / 2,
+  };
+  return comboOriginPoint;
+}

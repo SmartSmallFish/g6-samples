@@ -54,10 +54,10 @@ class Panel extends React.Component<PanelProps, PanelState> {
 
 const WrappedPanel = withEditorContext(Panel);
 
+export const ComboPanel = DetailPanel.create<PanelProps>("combo")(WrappedPanel);
 export const NodePanel = DetailPanel.create<PanelProps>("node")(WrappedPanel);
 export const EdgePanel = DetailPanel.create<PanelProps>("edge")(WrappedPanel);
 export const MultiPanel = DetailPanel.create<PanelProps>("multi")(WrappedPanel);
 export const CanvasPanel = DetailPanel.create<PanelProps>("canvas")(
   WrappedPanel
 );
-export const ComboPanel = DetailPanel.create<PanelProps>("combo")(WrappedPanel);
