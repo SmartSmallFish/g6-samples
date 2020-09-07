@@ -105,8 +105,8 @@ function App() {
                 size: [COMMON_FIELD_WIDTH, 70],
                 type: "combo-rect",
                 data: {
-                  title: "用户信息列表",
-                  desc: "主体数据",
+                  title: "接口名",
+                  desc: "接口描述",
                 },
               }}
             >

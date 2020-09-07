@@ -33,7 +33,7 @@ const addCommand: BaseCommand<AddCommandParams> = {
 
     graph.add(type, model);
 
-    // this.setSelectedItems(graph, [model.id]);
+    this.setSelectedItems(graph, [model.id]);
   },
 
   undo(graph) {

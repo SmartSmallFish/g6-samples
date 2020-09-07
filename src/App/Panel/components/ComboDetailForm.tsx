@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { Input, Button } from "antd";
-import { map, forEach, findIndex, filter } from "lodash";
+import { map, forEach, findIndex, filter, isEqual } from "lodash";
 import { Form as LegacyForm } from "@ant-design/compatible";
 import { INode, ICombo } from "@antv/g6/lib/interface/item";
 import { NodeConfig, ComboConfig } from "@antv/g6/lib/types";
 import { executeBatch, guid } from "@/utils";
-import { COMMON_FIELD_HEIGHT } from "@/shape/constants";
-import { getComboOriginPoint } from "@/shape/utils";
+import {
+  COMMON_FIELD_HEIGHT,
+  COMMON_FIELD_WIDTH,
+} from "@/shape/constants";
 import { PanelProps } from "../../Panel";
 import FormField from "./FormField";
 
@@ -38,18 +40,28 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
 
   firstFieldPos: { x: number; y: number } = null;
 
-  getFirstFieldPos = (nodes: Array<NodeConfig>, combo: ICombo) => {
-    // if (nodes[0]) {
-    //   const { x, y } = nodes[0];
-    //   this.firstFieldPos = { x, y };
-    // } else {
-    //   console.log("getFirstFieldPos>>>>", combo);
-      const keyShape = combo.getKeyShape();
-      const BBox = keyShape.getBBox();
-      const { x, y } = BBox;
-      this.firstFieldPos = { x, y };
-    // }
+  getFirstFieldPos = (combo: ICombo) => {
+    const { graph } = this.props;
+    const BBox = combo.getBBox();
+    const { centerX, centerY } = BBox;
+    const { x: itemCenterX, y: itemCenterY } = graph.getCanvasByPoint(
+      centerX,
+      centerY
+    );
+    this.firstFieldPos = {
+      x: itemCenterX - COMMON_FIELD_WIDTH / 2,
+      y: itemCenterY,
+    };
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { combos } = this.props;
+    if (!isEqual(combos, nextProps.combos)) {
+      this.setState({
+        ...this.initState(nextProps),
+      });
+    }
+  }
 
   initState = (props): FormState => {
     const { combos } = props;
@@ -64,7 +76,7 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
         childNodes.push(node.getModel() as NodeConfig);
       }
     });
-    this.getFirstFieldPos(childNodes, combo);
+    this.getFirstFieldPos(combo);
     return {
       nodes: childNodes,
       comboData: { comboId, ...data } as ComboData,
@@ -105,12 +117,12 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
   };
 
   saveCombo = () => {
+    console.log(">>>>", COMMON_FIELD_HEIGHT);
     const { form, graph, combos } = this.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-      console.log("constructor>>>>", COMMON_FIELD_HEIGHT);
       const { title, desc, ...rest } = values;
 
       const nodes = Object.values(rest);
@@ -134,8 +146,7 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
               x: this.firstFieldPos.x,
               y: this.firstFieldPos.y + index * COMMON_FIELD_HEIGHT,
             };
-          // graph.addItem(model);
-          graph.add('node', model);
+            graph.add("node", model);
 
             // executeCommand("add", {
             //   id: node.id,

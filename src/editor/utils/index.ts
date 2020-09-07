@@ -145,11 +145,12 @@ export function setSelectedItems(graph: Graph, items: Item[] | string[]) {
 
 /** 清除选中状态 */
 export function clearSelectedState(graph: Graph, shouldUpdate: (item: Item) => boolean = () => true) {
+  const selectedCombos = getSelectedCombos(graph);
   const selectedNodes = getSelectedNodes(graph);
   const selectedEdges = getSelectedEdges(graph);
 
   executeBatch(graph, () => {
-    [...selectedNodes, ...selectedEdges].forEach(item => {
+    [...selectedCombos, ...selectedNodes, ...selectedEdges].forEach((item) => {
       if (shouldUpdate(item)) {
         graph.setItemState(item, ItemState.Selected, false);
       }

@@ -1,6 +1,5 @@
 import G6 from "@antv/g6";
 import { ShapeOptions as IShapeOptions } from "@antv/g6/lib/interface/shape";
-import { map, debounce } from "lodash";
 import { GGroup, NodeModel, Item } from "@/common/interfaces";
 import { getComboOriginPoint } from "@/shape/utils";
 import { setAnchorPointsState } from "../common/anchor";
@@ -8,8 +7,6 @@ import {
   COMBO_BORDER,
   COMBO_TITLE_HEIGHT,
   COMBO_DESC_HEIGHT,
-  COMMON_FIELD_WIDTH,
-  COMMON_FIELD_HEIGHT,
   NODE_FONT_SIZE,
   COMNO_FIELD_GAP_HEIGHT,
 } from "../constants";
@@ -21,7 +18,7 @@ const titleStyle = {
 };
 
 const WRAPPER_CLASS_NAME = "combo-wrapper";
-const TITLE_SHAPE = 'title-shape';
+const TITLE_SHAPE = "title-shape";
 const DESC_SHAPE = "desc-shape";
 
 interface ComboAttr {
@@ -46,11 +43,9 @@ const comboRect: IShapeOptions = {
       paddingTop += COMBO_DESC_HEIGHT + COMNO_FIELD_GAP_HEIGHT;
     }
     cfg.padding = cfg.padding || [paddingTop, 5, 2, 5];
-    // cfg.padding = [paddingTop, 5, 2, 5];
     const style = self.getShapeStyle(cfg);
     const comboOriginPoint = getComboOriginPoint(self, cfg);
     const { x, y } = comboOriginPoint;
-    const childrenLen = cfg.children ? cfg.children.length : 0;
     const rect = group.addShape("rect", {
       name: "combo-keyShape",
       className: WRAPPER_CLASS_NAME,
@@ -61,11 +56,6 @@ const comboRect: IShapeOptions = {
         y,
         width: style.width,
         height: style.height,
-        // width: COMMON_FIELD_WIDTH,
-        // height:
-        //   paddingTop +
-        //   COMNO_FIELD_GAP_HEIGHT * 2 +
-        //   childrenLen * COMMON_FIELD_HEIGHT,
         fill: "#FFF",
         stroke: "#7947eb",
         lineWidth: COMBO_BORDER,
@@ -74,26 +64,10 @@ const comboRect: IShapeOptions = {
       },
     });
 
-    // self.drawPlaceholder(paddingTop, group, comboOriginPoint);
     self.drawTitle(cfg, group, comboOriginPoint);
     self.drawDesc(cfg, group, comboOriginPoint);
 
     return rect;
-  },
-
-  drawPlaceholder(paddingTop: number,group: GGroup, originPoint: OriginPoint) {
-    const { x, y } = originPoint;
-    group.addShape("rect", {
-      attrs: {
-        x,
-        y,
-        width: COMMON_FIELD_WIDTH,
-        height: paddingTop,
-        fill: "transparent",
-        radius: [8, 8, 0, 0],
-        cursor: "move",
-      },
-    });
   },
 
   drawTitle(cfg: NodeModel, group: GGroup, originPoint: OriginPoint) {
@@ -110,7 +84,6 @@ const comboRect: IShapeOptions = {
         x: x + COMBO_BORDER,
         y: y + COMBO_BORDER,
         width: style.width - COMBO_BORDER * 2,
-        // width: COMMON_FIELD_WIDTH - COMBO_BORDER,
         height: COMBO_TITLE_HEIGHT,
         fill: "#999",
         radius: [8, 8, 0, 0],
@@ -125,7 +98,6 @@ const comboRect: IShapeOptions = {
         x: x + COMBO_BORDER / 2,
         y: y + COMBO_BORDER,
         width: style.width - COMBO_BORDER,
-        // width: COMMON_FIELD_WIDTH - COMBO_BORDER,
         height: COMBO_TITLE_HEIGHT - COMNO_FIELD_GAP_HEIGHT,
         fill: "#FFF",
         radius: [8, 8, 0, 0],
@@ -160,7 +132,6 @@ const comboRect: IShapeOptions = {
         x: x + COMBO_BORDER,
         y: y + COMBO_TITLE_HEIGHT + COMBO_BORDER,
         width: style.width - COMBO_BORDER * 2,
-        // width: COMMON_FIELD_WIDTH - COMBO_BORDER,
         height: COMBO_DESC_HEIGHT,
         fill: "#999",
         cursor: "move",
@@ -174,7 +145,6 @@ const comboRect: IShapeOptions = {
         x: x + COMBO_BORDER / 2,
         y: y + COMBO_TITLE_HEIGHT + COMBO_BORDER,
         width: style.width - COMBO_BORDER,
-        // width: COMMON_FIELD_WIDTH- COMBO_BORDER,
         height: COMBO_DESC_HEIGHT - COMNO_FIELD_GAP_HEIGHT,
         fill: "#FFF",
         cursor: "move",
@@ -197,28 +167,9 @@ const comboRect: IShapeOptions = {
   afterUpdate(cfg, combo) {
     const self = this;
     const group = combo.get("group");
-    // this.onAfterUpdate(self, cfg, group);
 
-    // this.updateComboStyle(cfg, group);
-    console.log("afterUpdate>>>>>>");
     this.updateTitlePosition(self, cfg, group);
     this.updateDescPosition(self, cfg, group);
-  },
-
-  updateComboStyle(cfg, group) {
-    const item = group.find((item) => {
-      return item.get("name") === "combo-keyShape";
-    });
-    console.log("object>>>>", cfg.children);
-    const childrenLen = cfg.children ? cfg.children.length : 0;
-    const padding = cfg.padding;
-    item.attr({
-      width: COMMON_FIELD_WIDTH,
-      height:
-        padding[0] +
-        COMNO_FIELD_GAP_HEIGHT * 2 +
-        childrenLen * COMMON_FIELD_HEIGHT,
-    });
   },
 
   updateTitlePosition(self, cfg, group) {
@@ -272,27 +223,6 @@ const comboRect: IShapeOptions = {
       y: y + COMBO_TITLE_HEIGHT + COMBO_DESC_HEIGHT / 2,
     });
   },
-
-  // onAfterUpdate: debounce((self, cfg, group) {
-  //   // const group = combo.get("group");
-  //   const comboOriginPoint = getComboOriginPoint(self, cfg);
-
-  //   const children = group.findAll((item) => {
-  //     return (
-  //       item.get("className") === TITLE_SHAPE ||
-  //       item.get("className") === DESC_SHAPE
-  //     );
-  //   });
-
-  //   if (children) {
-  //     map(children, (child) => {
-  //       group.removeChild(child);
-  //     });
-  //   }
-
-  //   self.drawTitle(cfg, group, comboOriginPoint);
-  //   self.drawDesc(cfg, group, comboOriginPoint);
-  // }, 500),
 
   setState(name: string, value: string | boolean, item: Item) {
     setAnchorPointsState.call(this, name, value, item);
