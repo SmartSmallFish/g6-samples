@@ -3,6 +3,8 @@ import { FormComponentProps } from "@ant-design/compatible/lib/form";
 import { DetailPanel, withEditorContext } from "@/index";
 import { EditorContextProps } from "@/components/EditorContext";
 import { DetailPanelComponentProps } from "@/components/DetailPanel";
+import NodeDetailForm from "./components/NodeDetailForm";
+import EdgeDetailForm from "./components/EdgeDetailForm";
 import ComboDetailForm from "./components/ComboDetailForm";
 
 export interface PanelProps
@@ -26,15 +28,11 @@ class Panel extends React.Component<PanelProps, PanelState> {
   };
 
   renderNodeDetail = () => {
-    const { nodes } = this.props;
-    console.log("object>>>>", nodes);
-    return null;
+    return <NodeDetailForm {...this.props} />;
   };
 
   renderEdgeDetail = () => {
-    const { edges } = this.props;
-    console.log("object>>>>", edges);
-    return null;
+    return <EdgeDetailForm {...this.props} />;
   };
 
   render() {

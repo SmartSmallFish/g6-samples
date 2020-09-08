@@ -1,6 +1,8 @@
+import { merge } from "lodash";
 import G6 from "@antv/g6";
 import { ShapeOptions as IShapeOptions } from "@antv/g6/lib/interface/shape";
 import { GGroup, NodeModel, Item } from "@/common/interfaces";
+import { ItemState } from "@/common/constants";
 import { getComboOriginPoint } from "@/shape/utils";
 import { setAnchorPointsState } from "../common/anchor";
 import {
@@ -31,6 +33,31 @@ interface OriginPoint {
 }
 
 const comboRect: IShapeOptions = {
+  options: {
+    wrapperStyle: {
+      shadowColor: 'transparent',
+      shadowBlur: 0,
+    },
+    stateStyles: {
+      [ItemState.Active]: {
+        wrapperStyle: {
+          shadowColor: "rgba(0, 0, 0, 0.5)",
+          shadowBlur: 10,
+        },
+      } as any,
+      [ItemState.Selected]: {
+        wrapperStyle: {
+          shadowColor: "rgba(0, 0, 0, 0.5)",
+          shadowBlur: 10,
+        },
+      } as any,
+    },
+  },
+
+  getOptions(model: NodeModel) {
+    return merge({}, this.options, model);
+  },
+
   drawShape(cfg: NodeModel, group: GGroup) {
     const self = this;
     let paddingTop = 2;
@@ -46,6 +73,7 @@ const comboRect: IShapeOptions = {
     const style = self.getShapeStyle(cfg);
     const comboOriginPoint = getComboOriginPoint(self, cfg);
     const { x, y } = comboOriginPoint;
+    const { wrapperStyle } = this.getOptions(cfg);
     const rect = group.addShape("rect", {
       name: "combo-keyShape",
       className: WRAPPER_CLASS_NAME,
@@ -61,6 +89,7 @@ const comboRect: IShapeOptions = {
         lineWidth: COMBO_BORDER,
         radius: 8,
         cursor: "move",
+        ...wrapperStyle,
       },
     });
 
@@ -225,6 +254,29 @@ const comboRect: IShapeOptions = {
   },
 
   setState(name: string, value: string | boolean, item: Item) {
+    const group = item.get("group");
+    const model = item.getModel();
+    const states = item.getStates() as ItemState[];
+
+    const shape = group.find((item) => {
+      return item.get("name") === "combo-keyShape";
+    });
+
+    const options = this.getOptions(model);
+    const shapeNameStyle = "wrapperStyle";
+
+    shape.attr({ ...options[shapeNameStyle] });
+
+    states.forEach((state) => {
+      if (
+        options.stateStyles[state] &&
+        options.stateStyles[state][shapeNameStyle]
+      ) {
+        shape.attr({
+          ...options.stateStyles[state][shapeNameStyle],
+        });
+      }
+    });
     setAnchorPointsState.call(this, name, value, item);
   },
 
