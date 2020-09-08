@@ -5,10 +5,7 @@ import { Form as LegacyForm } from "@ant-design/compatible";
 import { INode, ICombo } from "@antv/g6/lib/interface/item";
 import { NodeConfig, ComboConfig } from "@antv/g6/lib/types";
 import { executeBatch, guid } from "@/utils";
-import {
-  COMMON_FIELD_HEIGHT,
-  COMMON_FIELD_WIDTH,
-} from "@/shape/constants";
+import { COMMON_FIELD_HEIGHT, COMMON_FIELD_WIDTH } from "@/shape/constants";
 import { PanelProps } from "../../Panel";
 import FormField from "./FormField";
 
@@ -102,16 +99,11 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
 
   delField = (node: NodeConfig) => {
     const { nodes } = this.state;
-    const { fieldStatus } = node;
     const index = findIndex(nodes, (o) => {
       return o.id === node.id;
     });
     if (index !== -1) {
-      if (fieldStatus === FIELD_STATUS.ADD) {
-        nodes.splice(index, 1);
-      } else {
-        nodes[index].fieldStatus = FIELD_STATUS.DELETED;
-      }
+      nodes[index].fieldStatus = FIELD_STATUS.DELETED;
       this.setState({ nodes });
     }
   };
@@ -141,8 +133,9 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
         });
         map(comboNodes, (node, index) => {
           if (node.fieldStatus === FIELD_STATUS.ADD) {
+            const { fieldStatus, ...restOpts } = node as INode;
             const model = {
-              ...node,
+              ...restOpts,
               x: this.firstFieldPos.x,
               y: this.firstFieldPos.y + index * COMMON_FIELD_HEIGHT,
             };
@@ -186,14 +179,21 @@ class ComboDetailForm extends Component<PanelProps, FormState> {
     const { comboData, nodes } = this.state;
     const { form } = this.props;
 
-    const visibleNodes = filter(nodes, (node) => {
-      return node.fieldStatus !== FIELD_STATUS.DELETED;
-    });
+    let visibleNodeIndex = 0;
 
-    const formItems = map(visibleNodes, (node: NodeConfig, index: number) => {
+    const formItems = map(nodes, (node: NodeConfig, index: number) => {
       const { id } = node;
+      const style =
+        node.fieldStatus === FIELD_STATUS.DELETED ? { display: "none" } : {};
+      if (node.fieldStatus !== FIELD_STATUS.DELETED) {
+        ++visibleNodeIndex;
+      }
       return (
-        <Item key={`field_${id}`} label={`字段${index + 1}`}>
+        <Item
+          key={`field_${id}`}
+          label={`字段${visibleNodeIndex}`}
+          style={style}
+        >
           {form.getFieldDecorator(`field_${id}`, {
             initialValue: node || {},
           })(<FormField onDel={this.delField} />)}

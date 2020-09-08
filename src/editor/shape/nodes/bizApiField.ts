@@ -28,7 +28,7 @@ const bizApiField: CustomNode = {
   options: {
     size: [COMMON_FIELD_WIDTH, COMMON_FIELD_HEIGHT],
     wrapperStyle: {
-      fill: "#F00",
+      fill: "transparent",
     },
     contentStyle: {
       fill: "transparent",
@@ -43,11 +43,14 @@ const bizApiField: CustomNode = {
         wrapperStyle: {
           fill: "#fafafa",
         },
-        contentStyle: {},
+        contentStyle: {
+          fill: "#fafafa",
+        },
         labelStyle: {},
       } as any,
       [ItemState.Selected]: {
-        wrapperStyle: {},
+        wrapperStyle: {
+        },
         contentStyle: {},
         labelStyle: {},
       } as any,

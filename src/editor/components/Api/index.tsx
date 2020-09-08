@@ -126,7 +126,8 @@ class Api extends React.Component<ApiProps, ApiState> {
         type: "combo-rect",
       },
       ...graphConfig,
-      groupType: "rect",
+      // groupType: "rect",
+      groupByTypes: false,
     });
 
     return this.graph;

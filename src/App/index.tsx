@@ -8,7 +8,7 @@ const data = {
   nodes: [
     {
       id: "0",
-      groupId: "p1",
+      // groupId: "p1",
       label: "Node1",
       x: 50,
       y: 50,
@@ -16,7 +16,7 @@ const data = {
     },
     {
       id: "1",
-      groupId: "p1",
+      // groupId: "p1",
       label: "Node2",
       x: 50,
       y: 200,
@@ -62,11 +62,11 @@ const data = {
     },
     { source: "2", target: "combo1" },
   ],
-  groups: [
-    {
-      id: "p1",
-    },
-  ],
+  // groups: [
+  //   {
+  //     id: "p1",
+  //   },
+  // ],
   combos: [
     {
       id: "combo1",
